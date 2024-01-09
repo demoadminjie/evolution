@@ -1,0 +1,36 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# Environment variables available to all jobs and steps in this workflow
+env:
+  TENCENT_JP_TCR: jpccr.ccs.tencentyun.com
+  TENCENT_JP_TCR_URL: jpccr.ccs.tencentyun.com/next/evolution
+  DOCKER_IMAGE: evolution
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build project
+      run: |
+        docker-compose -f docker-compose.yml build
+
+    - name: Login to Tencent Cloud TCR
+      run: |
+        docker login --username ${{ secrets.TCR_USERNAME }} --password '${{ secrets.TCR_PASSWORD }}'  ${TENCENT_JP_TCR_URL}
+    
+    - name: Tag and push Docker images
+      run: |
+        docker tag ${DOCKER_IMAGE} ${TENCENT_JP_TCR_URL}:${GITHUB_SHA}
+        docker push ${TENCENT_JP_TCR_URL}:${GITHUB_SHA}
+        docker logout
