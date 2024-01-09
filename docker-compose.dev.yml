@@ -1,0 +1,16 @@
+version: '3'
+services:
+  mongo:
+    image: "mongo:latest"
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+  nginx:
+    image: "nginx:latest"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./docker-nginx/nginx.dev.conf:/etc/nginx/nginx.conf
+volumes:
+  mongo-data:
