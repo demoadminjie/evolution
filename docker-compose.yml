@@ -1,0 +1,31 @@
+version: '3'
+services:
+  app:
+    build: ./server
+    environment:
+      DB_CONNECTION_STRING: mongodb://mongo:27017/mydb
+      JWT_SECRET: mySuperSecretKey
+    ports:
+      - "3002:3002"
+    depends_on:
+      - mongo
+  mongo:
+    image: "mongo:latest"
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+  client:
+    build: ./client
+    command: sh -c "npm install && npm run build && npx serve -s build -l 3001"
+    ports:
+      - "3001:3001"
+  nginx:
+    image: "nginx:latest"
+    build: ./docker-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker-nginx/nginx.conf:/etc/nginx/nginx.conf
+volumes:
+  mongo-data:
