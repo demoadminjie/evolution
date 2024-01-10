@@ -29,6 +29,7 @@ jobs:
       run: |
         docker login --username ${{ secrets.TCR_USERNAME }} --password '${{ secrets.TCR_PASSWORD }}'  ${TENCENT_JP_TCR_URL}
     
+# mongo uses an image, skipping
     - name: Tag and push Docker images
       run: |
         docker tag app:latest ${TENCENT_JP_TCR_URL}:app-${GITHUB_SHA}
@@ -37,6 +38,4 @@ jobs:
         docker push ${TENCENT_JP_TCR_URL}:client-${GITHUB_SHA}
         docker tag nginx:latest ${TENCENT_JP_TCR_URL}:nginx-${GITHUB_SHA}
         docker push ${TENCENT_JP_TCR_URL}:nginx-${GITHUB_SHA}
-        docker tag mongo:latest ${TENCENT_JP_TCR_URL}:mongo-${GITHUB_SHA}
-        docker push ${TENCENT_JP_TCR_URL}:mongo-${GITHUB_SHA}
         docker logout
