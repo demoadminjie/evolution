@@ -31,9 +31,9 @@ jobs:
     
     - name: Tag and push Docker images
       run: |
-        docker tag evolution-app ${TENCENT_JP_TCR_URL}/app:${GITHUB_SHA}
+        docker tag app ${TENCENT_JP_TCR_URL}/app:${GITHUB_SHA}
         docker push ${TENCENT_JP_TCR_URL}/app:${GITHUB_SHA}
-        docker tag evolution-client ${TENCENT_JP_TCR_URL}/app:${GITHUB_SHA}
+        docker tag client ${TENCENT_JP_TCR_URL}/app:${GITHUB_SHA}
         docker push ${TENCENT_JP_TCR_URL}/app:${GITHUB_SHA}
         docker tag nginx ${TENCENT_JP_TCR_URL}/app:${GITHUB_SHA}
         docker push ${TENCENT_JP_TCR_URL}/app:${GITHUB_SHA}
